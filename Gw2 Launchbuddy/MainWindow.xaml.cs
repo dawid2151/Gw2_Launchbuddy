@@ -18,7 +18,6 @@ using Gw2_Launchbuddy.Modifiers;
 using System.Windows.Navigation;
 using System.Collections.Generic;
 using WizardTest;
-using Gw2_Launchbuddy.Premium;
 
 namespace Gw2_Launchbuddy
 {
@@ -94,7 +93,8 @@ namespace Gw2_Launchbuddy
 
             gr_acceditor.Visibility = Visibility.Collapsed;
 
-            if(PProtection.IspVersion())TitlePremium.Visibility = Visibility.Visible;
+            //if(PProtection.IspVersion())
+                TitlePremium.Visibility = Visibility.Visible;
         }
 
 
@@ -120,7 +120,7 @@ namespace Gw2_Launchbuddy
             EnviromentManager.AfterUI_Inits();
 
             //Setup
-            DonatePopup();
+            //DonatePopup();
             UIInit();
 
             /*Thread checkver = new Thread(checkversion);
@@ -137,11 +137,11 @@ namespace Gw2_Launchbuddy
             lv_accs.ItemsSource = AccountManager.Accounts;
             lv_accssettings.ItemsSource = AccountManager.Accounts;
             SettingsTabSetup();
-            if (VersionSwitcher.ShouldCheckForUpdate())
-            {
-                Thread checklbver = new Thread(checklbversion);
-                checklbver.Start();
-            }
+            //if (VersionSwitcher.ShouldCheckForUpdate())
+            //{
+            //    Thread checklbver = new Thread(checklbversion);
+            //    checklbver.Start();
+            //}
 
             this.Activate();
         }

@@ -3,7 +3,6 @@ using System;
 using System.Linq;
 using System.Net.Mail;
 using Gw2_Launchbuddy.ObjectManagers;
-using Gw2_Launchbuddy.Premium;
 
 namespace Gw2_Launchbuddy
 {
@@ -71,8 +70,8 @@ namespace Gw2_Launchbuddy
         public static string Create_Environment_Report()
         {
             string report = "";
-            report += PProtection.GetCurrentHash();
-            report += "\n is Premium:" + PProtection.IspVersion().ToString();
+            //report += PProtection.GetCurrentHash();
+            //report += "\n is Premium:" + PProtection.IspVersion().ToString();
 
             report += "\n\n########LB Folder########\n";
             report += "Path:" + EnviromentManager.LBAppdataPath + "\n";

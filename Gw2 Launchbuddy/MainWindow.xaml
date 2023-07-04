@@ -534,7 +534,7 @@
                                                     </StackPanel>
                                                     <TextBlock TextWrapping="Wrap" Margin="10">Info: If any 2 factor authentication is active make sure that remember this network is selected. Otherwise some LB settings like GFX settings cannot be applied.</TextBlock>
                                                 </DockPanel>
-                                                <UIControls:PContent>
+                                                <!--<UIControls:PContent>
                                                     <UIControls:PContent.LockedContent>
                                                         <DockPanel Margin="10" DockPanel.Dock="Top" Visibility="{Binding Path=SteamAccountAvailable, Converter={StaticResource BoolToVis}}" >
                                                             <Label Content="Account Type:" Style="{StaticResource H2}" VerticalAlignment="Center" Margin="-10,0,0,0" DockPanel.Dock="Top"/>
@@ -549,11 +549,11 @@
                                                                 <TextBlock TextWrapping="Wrap" Margin="10"> Select if this account was aquired via ArenaNet or Steam. This will enable you to launch steam accounts</TextBlock>
                                                             </DockPanel>
                                                             <DockPanel DockPanel.Dock="Bottom">
-                                                                <!--Button x:Name="bt_linkgamedata" Click="bt_linkgamedata_Click">Link Game Data</Button-->
+                                                                --><!--Button x:Name="bt_linkgamedata" Click="bt_linkgamedata_Click">Link Game Data</Button--><!--
                                                             </DockPanel>
                                                         </DockPanel>
                                                     </UIControls:PContent.LockedContent>
-                                                </UIControls:PContent>
+                                                </UIControls:PContent>-->
                                                 <DockPanel Margin="10,0,10,0"  DockPanel.Dock="Top" Visibility="{Binding Path=IsSteamAccount, Converter={StaticResource BoolToVis}}" >
                                                     <TextBlock DockPanel.Dock="Top" Foreground="Orange" TextWrapping="Wrap">
                                                         ATTENTION: In order to make your steam account Launchbuddy ready, please use either the GameData Linker or the Non Linked Guide.
@@ -862,7 +862,7 @@
                                                     <Label Content="Priority:" DockPanel.Dock="Right" HorizontalAlignment="Right"/>
                                                 </DockPanel>
                                             </DockPanel>
-                                            <UIControls:PContent>
+                                            <!--<UIControls:PContent>
                                                 <UIControls:PContent.LockedContent>
                                                     <StackPanel Margin="10">
                                                         <Label Style="{StaticResource H2}">CPU Affinity / Used CPUs</Label>
@@ -870,7 +870,7 @@
                                                         <ListView ItemsSource="{Binding ProcessAffinityConfig.UIBoxes}" MaxHeight="100"/>
                                                     </StackPanel>
                                                 </UIControls:PContent.LockedContent>
-                                            </UIControls:PContent>
+                                            </UIControls:PContent>-->
                                         </StackPanel>
                                     </Expander>
                                     <Expander x:Name="exp_accwindow" ToolTip="Gamewindow Settings" Style="{StaticResource Bordered}">

@@ -1,5 +1,4 @@
-﻿using Gw2_Launchbuddy.Premium;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -26,13 +25,13 @@ namespace Gw2_Launchbuddy.UIControls
         {
             InitializeComponent();
 
-            if (!PProtection.IspVersion())
-            {
-                actualcontent.IsEnabled = false;
-            }else
-            {
-                blockericon.Visibility = Visibility.Collapsed;
-            }
+            //if (!PProtection.IspVersion())
+            //{
+            //    actualcontent.IsEnabled = false;
+            //}else
+            //{
+            blockericon.Visibility = Visibility.Collapsed;
+            //}
         }
 
         private void Grid_MouseDown(object sender, MouseButtonEventArgs e)
