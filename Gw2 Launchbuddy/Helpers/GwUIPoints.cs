@@ -12,7 +12,7 @@ namespace Gw2_Launchbuddy.Helpers
         public static UIPoint pos_email_tb = new UIPoint(480, 430);
         public static UIPoint pos_passw_tb = new UIPoint(480, 510);
         public static UIPoint pos_login_bt = new UIPoint(100, 600);
-        public static UIPoint pos_authemail_bt = new UIPoint(400, 550);
+        public static UIPoint pos_authemail_bt = new UIPoint(250, 540);
         public static UIPoint pos_play_bt = new UIPoint(825, 715);
         public static UIPoint pos_authcode = new UIPoint(170, 500);
         public static UIPoint pos_authcode_remnetwork = new UIPoint(65, 545);

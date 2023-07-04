@@ -132,7 +132,7 @@ namespace Gw2_Launchbuddy.Modifiers
                     MouseClickLeft(acc.Client.Process.GetProcess(), GwUIPoints.pos_login_bt);
                 }
                 maxtries--;
-                Thread.Sleep(2000);
+                Thread.Sleep(1000);
             }
             PressPlayButton(acc);
         }
@@ -153,16 +153,8 @@ namespace Gw2_Launchbuddy.Modifiers
 
                             if (!acc.Client.Process.WaitForState(GwGameProcess.GameStatus.game_startup, 2000))
                             {
-                                //MouseClickLeft(acc.Client.Process.GetProcess(), GwUIPoints.pos_authemail_bt);
-                                //Thread.Sleep(100);
-
-                                for(int i =0;i<11;i++)
-                                {
-                                    PressKeyDown(Keys.Tab, acc.Client.Process.GetProcess(), false);
-                                    PressKeyUp(Keys.Tab, acc.Client.Process.GetProcess(), true);
-                                }
-                                PressKeyDown(Keys.Return, acc.Client.Process.GetProcess(), true);
-                                PressKeyUp(Keys.Return, acc.Client.Process.GetProcess(), true);
+                                MouseClickLeft(acc.Client.Process.GetProcess(), GwUIPoints.pos_authemail_bt);
+                                Thread.Sleep(1000);
 
                                 MouseClickLeft(acc.Client.Process.GetProcess(), GwUIPoints.pos_play_bt);
                             }

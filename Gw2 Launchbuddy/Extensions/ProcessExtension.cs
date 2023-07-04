@@ -6,6 +6,7 @@ using System.Management;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Gw2_Launchbuddy.Extensions.Triggers;
 using Gw2_Launchbuddy.Helpers;
 using Gw2_Launchbuddy.ObjectManagers;
 using PluginContracts.ObjectInterfaces;
@@ -30,7 +31,7 @@ namespace Gw2_Launchbuddy.Extensions
             manual_kill = 6
         }
 
-        public ProcessExtension(Process pro,bool allreadystarted=false)
+        public ProcessExtension(Process pro, bool allreadystarted = false)
         {
             this.pro = pro;
             started = allreadystarted;
@@ -50,11 +51,14 @@ namespace Gw2_Launchbuddy.Extensions
         public bool EnableRaisingEvents { set { pro.EnableRaisingEvents = value; } get { return pro.EnableRaisingEvents; } }
         public IntPtr ProcessorAffinity { set { pro.ProcessorAffinity = value; } get { return pro.ProcessorAffinity; } }
         public int ExitCode { get { return pro.ExitCode; } }
-        public bool CloseMainWindow(){ return pro.CloseMainWindow();}
+        public bool CloseMainWindow() { return pro.CloseMainWindow(); }
         public bool WaitForExit(int ms) { return pro.WaitForExit(ms); }
         public void WaitForExit() { pro.WaitForExit(); }
         public void Refresh() => pro.Refresh();
-        public IntPtr MainWindowHandle { get {
+        public IntPtr MainWindowHandle
+        {
+            get
+            {
                 //Handling issue https://stackoverflow.com/questions/60342879/process-mainwindowhandle-is-non-zero-in-net-framework-but-zero-in-net-core-unl
                 int i = 0;
                 if (HasExited) return IntPtr.Zero;
@@ -65,7 +69,7 @@ namespace Gw2_Launchbuddy.Extensions
                         break;
                     }
                     Thread.Sleep(50);
-                    if(i>=200)
+                    if (i >= 200)
                     {
                         throw new Exception("MainWindowhandle timeout was reached");
                     }
@@ -80,7 +84,8 @@ namespace Gw2_Launchbuddy.Extensions
                 {
                     return IntPtr.Zero;
                 }
-            } }
+            }
+        }
         public EventHandler Exited;
         public ProcessThreadCollection Threads { get { return pro.Threads; } }
         public ProcessStartInfo StartInfo { get { return pro.StartInfo; } set { pro.StartInfo = value; } }
@@ -105,14 +110,14 @@ namespace Gw2_Launchbuddy.Extensions
 
         public bool MigrateProcess(Process target)
         {
-            if(pro!=null)
+            if (pro != null)
             {
                 try
                 {
                     pro.Exited -= OnExitedSelf;
                 }
                 catch { }
-                
+
             }
 
             started = true;
@@ -169,7 +174,7 @@ namespace Gw2_Launchbuddy.Extensions
                     exitstatus = ExitStatus.self_crash;
                     break;
             }
-            Exited?.Invoke(sender,e);
+            Exited?.Invoke(sender, e);
         }
 
         public virtual bool Stop()
@@ -219,7 +224,7 @@ namespace Gw2_Launchbuddy.Extensions
 
         public void WaitForProcessExit()
         {
-            while(IsRunning)
+            while (IsRunning)
             {
                 Thread.Sleep(10);
             }
@@ -241,12 +246,12 @@ namespace Gw2_Launchbuddy.Extensions
             game_charscreen = 6
         }
 
-        public GwGameProcess (Process pro):base(pro)
+        public GwGameProcess(Process pro) : base(pro)
         {
 
         }
 
-        public GwGameProcess(Process pro,bool started=false) : base(pro,started)
+        public GwGameProcess(Process pro, bool started = false) : base(pro, started)
         {
 
         }
@@ -258,7 +263,7 @@ namespace Gw2_Launchbuddy.Extensions
             IntPtr hwndMain = base.MainWindowHandle;
 
             Enum.TryParse((sender as ProcessState).Name, out gamestatus);
-            GameStatusChanged?.Invoke(sender,e);
+            GameStatusChanged?.Invoke(sender, e);
             //Console.WriteLine("State changed to " + (sender as ProcessState).Name);
         }
 
@@ -286,31 +291,32 @@ namespace Gw2_Launchbuddy.Extensions
             List<IProcessTrigger> pt_loginwindow_prelogin = new List<IProcessTrigger>
             {
                 //40%
-                new ModuleTrigger("CoherentUI64.dll",this),
-                new FileSizeTrigger(EnviromentManager.GwClientTmpPath,null,0),
-                new WindowDimensionsTrigger(this.GetProcess(),800,int.MaxValue,800,int.MaxValue),
-                new ChildProcessSearchTrigger("CoherentUI_Host",this),
-                new SleepTrigger(1000)
+                new OpenCVElementExistsTrigger(this, Properties.Resources.template_login_eod)
+                //new SleepTrigger(1000)
             };
 
             List<IProcessTrigger> pt_loginwindow_authentication = new List<IProcessTrigger>
             {
                 //60%
                 new ModuleTrigger(new string[]{"DPAPI.dll"},this),
-                //dcomp.dll
-                new SleepTrigger(1500), //Needs better trigger in the future, currently unknown delta between pre login and authentication pending
+                new OpenCVElementNotExistsTrigger(this, Properties.Resources.template_login_eod)
+                //dcomp.
+                //new SleepTrigger(5000), //Needs better trigger in the future, currently unknown delta between pre login and authentication pending
             };
 
             List<IProcessTrigger> pt_loginwindow_pressplay = new List<IProcessTrigger>
             {
                 //80%
-                new ModuleTrigger(new string[]{"DPAPI.dll","dcomp.dll" },this),
+                new ModuleTrigger(new string[] { "DPAPI.dll", "dcomp.dll" },this),
+                new OpenCVElementExistsTrigger(this, Properties.Resources.template_play_eod)
+                //new SleepTrigger(2000)
             };
 
             List<IProcessTrigger> pt_game_startup = new List<IProcessTrigger>
             {
                 //new ModuleTrigger("WINSTA.dll",this)
-                new ModuleTrigger(new string[]{ "WINSTA.dll", "mscms.dll" },this)
+                new ModuleTrigger(new string[]{ "WINSTA.dll", "mscms.dll" },this),
+                new OpenCVElementNotExistsTrigger(this, Properties.Resources.template_play_eod)
             };
             List<IProcessTrigger> pt_game_charscreen = new List<IProcessTrigger>
             {
@@ -372,7 +378,7 @@ namespace Gw2_Launchbuddy.Extensions
             return false;
         }
 
-        public bool WaitForState(GameStatus status,int timeout=-1)
+        public bool WaitForState(GameStatus status, int timeout = -1)
         {
             DateTime waitstart = DateTime.Now;
 
@@ -382,9 +388,9 @@ namespace Gw2_Launchbuddy.Extensions
                 {
                     return true;
                 }
-                if(timeout>0)
+                if (timeout > 0)
                 {
-                    if((DateTime.Now- waitstart).TotalMilliseconds > timeout)
+                    if ((DateTime.Now - waitstart).TotalMilliseconds > timeout)
                     {
                         return false;
                     }
@@ -396,10 +402,10 @@ namespace Gw2_Launchbuddy.Extensions
         }
     }
 
-    public class SteamGwGameProcess:GwGameProcess
+    public class SteamGwGameProcess : GwGameProcess
     {
         Process steamprocess;
-        public SteamGwGameProcess(Process pro,Process steamprocess) :base(pro)
+        public SteamGwGameProcess(Process pro, Process steamprocess) : base(pro)
         {
             this.steamprocess = steamprocess;
         }
@@ -410,19 +416,19 @@ namespace Gw2_Launchbuddy.Extensions
 
             Action waitforgame = () =>
             {
-                while (ClientManager.SearchForeignClients(true).Count<=0)
+                while (ClientManager.SearchForeignClients(true).Count <= 0)
                 {
                     Thread.Sleep(100);
                 }
             };
             BlockerInfo.Run("Waiting for steam", "Launchbuddy is waiting for steam to launch GW2. Make sure to confirm any steam pop ups regarding the gamestart", waitforgame);
 
-            if(!BlockerInfo.Done)
+            if (!BlockerInfo.Done)
             {
                 return false;
             }
 
-            bool migratepro = MigrateProcess(ClientManager.SearchForeignClients(true,Client.ClientStatus.Created)[0]);
+            bool migratepro = MigrateProcess(ClientManager.SearchForeignClients(true, Client.ClientStatus.Created)[0]);
             ProcessWatcher prow = new ProcessWatcher(this, CreateStates());
             prow.Run();
             Exited += OnExit;
